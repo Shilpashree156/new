@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of a BST Node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a node into BST
+struct Node* insert(struct Node* root, int data) {
+    if (root == NULL)
+        return createNode(data);
+
+    if (data < root->data)
+        root->left = insert(root->left, data);
+    else
+        root->right = insert(root->right, data);
+
+    return root;
+}
+
+// Function to find the kth smallest element in BST using in-order traversal
+int kthSmallestUtil(struct Node* root, int* k) {
+    if (root == NULL)
+        return -1;
+
+    // Search in left subtree
+    int left = kthSmallestUtil(root->left, k);
+    if (left != -1)
+        return left;
+
+    // Visit this node
+    (*k)--;  // Decrease k to count down to the kth element
+    if (*k == 0)
+        return root->data;
+
+    // Search in right subtree
+    return kthSmallestUtil(root->right, k);
+}
+
+// Function to find the kth largest element in BST using reverse in-order traversal
+int kthLargestUtil(struct Node* root, int* k) {
+    if (root == NULL)
+        return -1;
+
+    // Search in right subtree
+    int right = kthLargestUtil(root->right, k);
+    if (right != -1)
+        return right;
+
+    // Visit this node
+    (*k)--;  // Decrease k to count down to the kth element
+    if (*k == 0)
+        return root->data;
+
+    // Search in left subtree
+    return kthLargestUtil(root->left, k);
+}
+
+// Wrapper function to find the kth smallest element
+int kthSmallest(struct Node* root, int k) {
+    return kthSmallestUtil(root, &k);
+}
+
+// Wrapper function to find the kth largest element
+int kthLargest(struct Node* root, int k) {
+    return kthLargestUtil(root, &k);
+}
+
+// Function to count total nodes in the BST
+int countNodes(struct Node* root) {
+    if (root == NULL)
+        return 0;
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+
+// Main function
+int main() {
+    struct Node* root = NULL;
+    int n, value, k, choice;
+
+    printf("Enter number of elements in BST: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+
+    int totalNodes = countNodes(root);
+
+    // Ensure k is valid
+    printf("Enter value of k: ");
+    scanf("%d", &k);
+
+    if (k < 1 || k > totalNodes) {
+        printf("Invalid k value! Please enter a k between 1 and %d.\n", totalNodes);
+        return -1;
+    }
+
+    printf("Find (1) Kth Smallest or (2) Kth Largest? Enter choice: ");
+    scanf("%d", &choice);
+
+    if (choice == 1) {
+        int result = kthSmallest(root, k);
+        if (result != -1)
+            printf("The %dth smallest element is: %d\n", k, result);
+        else
+            printf("Invalid k value!\n");
+    } else if (choice == 2) {
+        int result = kthLargest(root, k);
+        if (result != -1)
+            printf("The %dth largest element is: %d\n", k, result);
+        else
+            printf("Invalid k value!\n");
+    } else {
+        printf("Invalid choice!\n");
+    }
+
+    return 0;
+}
