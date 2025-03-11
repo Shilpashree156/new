@@ -1,0 +1,67 @@
+some commonly used regular expressions (regex) for validation purpose in Python:
+1. Validate an Email Address
+email_pattern = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+Valid Examples: `user@example.com`, `user.name@domain.co`, `my-email_123@server.org`
+Invalid Examples: `user@.com`, `@example.com`, `user@domaincom`
+Write a program to Validate an email address using following pattern:
+email_pattern = r'^[a-za-z0-9._-]+@[a-za-z0-9.-]+\.[a-za-z]{2,}$'
+import re
+def validate_email(email):
+   email_pattern = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+   if re.match(email_pattern, email):
+       return True
+   else:
+       return False
+ 
+email = input("Enter an email address: ")
+if validate_email(email):
+   print("Valid email address")
+else:
+   print("Invalid email address")
+ 
+2. Validate a URL (Starting with HTTP/HTTPS)
+url_pattern = r'^(https?://)(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$'
+Valid Examples: `http://example.com`, `https://www.google.com`, `https://sub.domain.net/path`
+Invalid Examples: `ftp://example.com`, `://missingprotocol.com`, `http:/wrong.com`
+ 
+3. Validate a Date (Formats: DD/MM/YYYY or MM-DD-YYYY)
+date_pattern = r'^(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[0-2])[-/]([0-9]{4})$'
+Valid Examples: `12/08/2024`, `03-12-1999`, `31-01-2020`
+Invalid Examples: `32/01/2023`, `2024/08/12`, `15-13-2021`
+ 
+4. Validate a Phone Number (With Optional Two Dashes)
+phone_pattern = r'^\d{3}-?\d{3}-?\d{4}$'
+Valid Examples: `123-456-7890`, `9876543210`, `456-789-1234`
+Invalid Examples: `123-45-6789`, `phone1234`, `12-3456-7890`
+ 
+5. Validate an IP Address (IPv4)
+ip_pattern = r'^((25[0-5]|2[0-4][0-9]|1?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9][0-9]?)$'
+Valid Examples: `192.168.1.1`, `8.8.8.8`, `255.255.255.255`
+Invalid Examples: `256.100.50.25`, `192.168.300.1`, `abcd.efg.hij.klm`
+ 
+6. Validate a Credit Card Number (Visa, MasterCard, Amex, etc.)
+credit_card_pattern = r'^\d{4}-?\d{4}-?\d{4}-?\d{4}$'
+Valid Examples: `1234-5678-9012-3456`, `9876543210987654`
+Invalid Examples: `1234-5678-9012`, `card123456789`
+ 
+7. Validate a Password (At least 8 characters, includes letters, numbers, and special characters)
+password_pattern = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'
+Valid Examples: `Strong@123`, `Abc$7890`, `myp@ssword1`
+Invalid Examples: `password`, `12345678`, `abcd1234`
+ 
+8. Validate a Username (Only Letters, Numbers, and Underscores, 3-16 Characters)
+username_pattern = r'^[a-zA-Z0-9_]{3,16}$'
+Valid Examples: `user_123`, `myUsername`, `hello_world`
+Invalid Examples: `user!@#`, `ab`, `longusername_exceeding16`
+ 
+9. Validate a Hex Color Code (#RRGGBB or #RGB)
+hex_color_pattern = r'^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
+Valid Examples: `#FFFFFF`, `#000`, `#123abc`
+Invalid Examples: `#ZZZZZZ`, `rgb(255,255,255)`, `123456`
+ 
+ 
+10. Validate a ZIP Code (U.S. 5-Digit or 9-Digit)
+zip_pattern = r'^\d{5}(-\d{4})?$'
+Valid Examples: `12345`, `98765-4321`
+Invalid Examples: `123`, `zip123`, `1234-567`
+ 
